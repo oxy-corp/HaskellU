@@ -1,0 +1,44 @@
++------------------------------HSU----------------------------------+
+
+gameInstance :: Global Scope -> Service
+gameInstance = game
+
+playersService :: Global Scope -> Service
+playersService = service gameInstance "Players"
+
+finishPart :: Local Scope -> Object
+local finishPart = workspace "Finish"
+
+hitEvent :: Event
+hitEvent = event finishPart "Touched"
+
+playerObject :: Object
+playerObject = getPlayer playersService hitEvent
+
+message :: String
+message = "Hello, player!"
+
+onEvent hitEvent (\_ ->
+    when (isValid playerObject) do
+        print message
+)
+
+
++------------------------------LUAU----------------------------------+
+
+local gameInstance = game
+local playersService = gameInstance:GetService("Players")
+
+local finishPart = game.Workspace.Finish
+
+local function onHit(hit)
+    local playerObject = playersService:GetPlayerFromCharacter(hit.Parent)
+    if playerObject then
+        local message = "Hello, player!"
+        print(message)
+    end
+end
+
+finishPart.Touched:Connect(onHit)
+
+

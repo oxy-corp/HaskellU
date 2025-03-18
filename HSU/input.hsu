@@ -1,0 +1,14 @@
+gameInstance :: Global Scope -> Service
+gameInstance = game
+
+playersService :: Global Scope -> Service
+playersService = service gameInstance "Players"
+
+finishPart :: Local Scope -> Object
+finishPart = workspace "Finish"
+
+hitEvent :: Event
+hitEvent = event finishPart "Touched"
+
+playerObject :: Object
+playerObject = getPlayer playersService hitEvent
